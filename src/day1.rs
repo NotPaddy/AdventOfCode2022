@@ -1,7 +1,7 @@
 use aoc_2022::{Runner, Solution};
 
 fn main() {
-    Runner::new(include_str!("../inputs/day01.txt")).run(&Day1)
+    Runner::new(&include_str!("../inputs/day01.txt").replace("\r\n", "\n")).run(&Day1)
 }
 
 struct Day1;
@@ -10,13 +10,11 @@ impl Solution<1> for Day1 {
     type Output = u32;
 
     fn part1(&self, input: &str) -> Self::Output {
-        let elves = Self::get_elf_calories(input);
-
-        *elves.iter().max().unwrap()
+        Self::get_elf_calories(input).max().unwrap()
     }
 
     fn part2(&self, input: &str) -> Option<Self::Output> {
-        let mut elves = Self::get_elf_calories(input);
+        let mut elves: Vec<u32> = Self::get_elf_calories(input).collect();
         elves.sort();
 
         let sum = elves.iter().rev().take(3).sum();
@@ -25,17 +23,10 @@ impl Solution<1> for Day1 {
 }
 
 impl Day1 {
-    fn get_elf_calories(input: &str) -> Vec<u32> {
-        let mut elves: Vec<u32> = Vec::from([0]);
-        for line in input.lines() {
-            match line.parse::<u32>() {
-                Ok(cal) => {
-                    *elves.last_mut().unwrap() += cal;
-                }
-                Err(_) => elves.push(0),
-            }
-        }
-        elves
+    fn get_elf_calories(input: &str) -> impl Iterator<Item = u32> + '_ {
+        input
+            .split("\n\n")
+            .map(|elf| elf.lines().map(|l| l.parse::<u32>().unwrap_or(0)).sum())
     }
 }
 
