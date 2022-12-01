@@ -7,6 +7,7 @@ edition = "2021"
 path = "src/lib.rs"
 
 [dependencies]
+indoc = "1.0.7"
 
 [[bin]]
 name = "day1"
