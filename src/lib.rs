@@ -14,12 +14,12 @@ pub struct Runner<'a> {
     input: &'a str,
 }
 
-impl<'a> Runner<'a> {
-    pub fn new(input: &'a str) -> Runner<'a> {
+impl Runner<'_> {
+    pub fn new(input: &'_ str) -> Runner<'_> {
         Runner { input }
     }
 
-    pub fn run<const DAY: u8, S: Solution<DAY> + 'a>(&'a self, solution: &S) {
+    pub fn run<const DAY: u8, S: Solution<DAY>>(&'_ self, solution: &S) {
         println!("--------");
         println!("Day {:02}", DAY);
         println!("--------");
