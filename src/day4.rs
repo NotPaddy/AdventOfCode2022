@@ -17,9 +17,7 @@ impl Solution<4> for Day4 {
     }
 
     fn part2(&self, input: &str) -> Option<Self::Output> {
-        Some(filter_count_ranges(input, |l, r| {
-            l.overlaps(r) || r.overlaps(l)
-        }))
+        Some(filter_count_ranges(input, |l, r| l.overlaps(r)))
     }
 }
 
