@@ -1,5 +1,3 @@
-#![feature(iter_array_chunks)]
-
 use aoc_2022::{Runner, Solution};
 use std::iter::repeat_with;
 
