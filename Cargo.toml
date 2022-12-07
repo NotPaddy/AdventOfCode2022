@@ -8,6 +8,7 @@ path = "src/lib.rs"
 
 [dependencies]
 indoc = "1.0.7"
+indextree = "4.5.0"
 
 [[bin]]
 name = "day1"
@@ -32,3 +33,7 @@ path = "src/day5.rs"
 [[bin]]
 name = "day6"
 path = "src/day6.rs"
+
+[[bin]]
+name = "day7"
+path = "src/day7.rs"
