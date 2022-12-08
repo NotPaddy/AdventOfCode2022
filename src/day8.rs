@@ -1,10 +1,6 @@
-use aoc_2022::{Runner, Solution};
+use crate::Solution;
 
-fn main() {
-    Runner::new(include_str!("../inputs/day08.txt")).run(&Day8)
-}
-
-struct Day8;
+pub struct Day8;
 
 impl Solution<8> for Day8 {
     type Output = usize;

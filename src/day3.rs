@@ -1,12 +1,6 @@
-#![feature(iter_array_chunks)]
+use crate::Solution;
 
-use aoc_2022::{Runner, Solution};
-
-fn main() {
-    Runner::new(include_str!("../inputs/day03.txt")).run(&Day3)
-}
-
-struct Day3;
+pub struct Day3;
 
 impl Solution<3> for Day3 {
     type Output = u32;

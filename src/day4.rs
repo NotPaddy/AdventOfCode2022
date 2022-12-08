@@ -1,13 +1,7 @@
-#![feature(iter_array_chunks)]
-
-use aoc_2022::{Runner, Solution};
+use crate::Solution;
 use std::ops::RangeInclusive;
 
-fn main() {
-    Runner::new(include_str!("../inputs/day04.txt")).run(&Day4)
-}
-
-struct Day4;
+pub struct Day4;
 
 impl Solution<4> for Day4 {
     type Output = usize;

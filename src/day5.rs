@@ -1,16 +1,12 @@
-use aoc_2022::{Runner, Solution};
+use crate::Solution;
 use std::iter::repeat_with;
-
-fn main() {
-    Runner::new(&include_str!("../inputs/day05.txt").replace("\r\n", "\n")).run(&Day5)
-}
 
 enum Crane {
     CrateMover9000,
     CrateMover9001,
 }
 
-struct Day5;
+pub struct Day5;
 
 impl Solution<5> for Day5 {
     type Output = String;

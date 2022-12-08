@@ -1,13 +1,7 @@
-#![feature(iter_array_chunks)]
-
-use aoc_2022::{Runner, Solution};
+use crate::Solution;
 use indextree::{Arena, NodeId};
 
-fn main() {
-    Runner::new(include_str!("../inputs/day07.txt")).run(&Day7)
-}
-
-struct Day7;
+pub struct Day7;
 
 impl Solution<7> for Day7 {
     type Output = usize;

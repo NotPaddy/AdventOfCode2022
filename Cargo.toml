@@ -7,37 +7,19 @@ edition = "2021"
 path = "src/lib.rs"
 
 [dependencies]
-indoc = "1.0.7"
+clap = { version = "4.0.22", features = ["derive"] }
 indextree = "4.5.0"
+indoc = "1.0.7"
+
+[dev-dependencies]
+criterion = { version = "0.4.0", features = ["default", "html_reports"] }
 
 [[bin]]
-name = "day1"
-path = "src/day1.rs"
+name = "aoc_2022"
+path = "src/main.rs"
 
-[[bin]]
-name = "day2"
-path = "src/day2.rs"
+[[bench]]
+name = "aoc_bench"
+harness = false
 
-[[bin]]
-name = "day3"
-path = "src/day3.rs"
 
-[[bin]]
-name = "day4"
-path = "src/day4.rs"
-
-[[bin]]
-name = "day5"
-path = "src/day5.rs"
-
-[[bin]]
-name = "day6"
-path = "src/day6.rs"
-
-[[bin]]
-name = "day7"
-path = "src/day7.rs"
-
-[[bin]]
-name = "day8"
-path = "src/day8.rs"

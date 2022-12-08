@@ -1,13 +1,8 @@
-#![feature(array_windows)]
-
-use aoc_2022::{Runner, Solution};
+use crate::Solution;
 use std::collections::HashSet;
 use std::hash::Hash;
 
-fn main() {
-    Runner::new(include_str!("../inputs/day06.txt")).run(&Day6)
-}
-struct Day6;
+pub struct Day6;
 
 impl Solution<6> for Day6 {
     type Output = usize;
