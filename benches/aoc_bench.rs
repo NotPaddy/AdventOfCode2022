@@ -2,7 +2,7 @@ use aoc_2022::*;
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 
 fn bench_day<const DAY: u8, S: Solution<DAY>>(solution: &S, input: &str, c: &mut Criterion) {
-    let mut group = c.benchmark_group(format!("Day {}", DAY));
+    let mut group = c.benchmark_group(format!("Day {:02}", DAY));
     group.bench_function("Part 1", |b| {
         b.iter(|| solution.part1(black_box(&input.replace("\r\n", "\n"))))
     });
@@ -51,4 +51,9 @@ fn bench_day08(c: &mut Criterion) {
 }
 criterion_group!(day08, bench_day08);
 
-criterion_main!(day01, day02, day03, day04, day05, day06, day07, day08);
+fn bench_day09(c: &mut Criterion) {
+    bench_day(&day9::Day9, include_str!("../inputs/day09.txt"), c)
+}
+criterion_group!(day09, bench_day09);
+
+criterion_main!(day01, day02, day03, day04, day05, day06, day07, day08, day09);

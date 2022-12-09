@@ -1,7 +1,4 @@
-use aoc_2022::{
-    day1::Day1, day2::Day2, day3::Day3, day4::Day4, day5::Day5, day6::Day6, day7::Day7, day8::Day8,
-    *,
-};
+use aoc_2022::*;
 use clap::Parser;
 
 #[derive(Parser, Debug)]
@@ -15,14 +12,15 @@ fn main() {
     let day = Args::parse().day;
 
     match day {
-        1 => Runner::new(include_str!("../inputs/day01.txt")).run(&Day1),
-        2 => Runner::new(include_str!("../inputs/day02.txt")).run(&Day2),
-        3 => Runner::new(include_str!("../inputs/day03.txt")).run(&Day3),
-        4 => Runner::new(include_str!("../inputs/day04.txt")).run(&Day4),
-        5 => Runner::new(include_str!("../inputs/day05.txt")).run(&Day5),
-        6 => Runner::new(include_str!("../inputs/day06.txt")).run(&Day6),
-        7 => Runner::new(include_str!("../inputs/day07.txt")).run(&Day7),
-        8 => Runner::new(include_str!("../inputs/day08.txt")).run(&Day8),
+        1 => Runner::new(include_str!("../inputs/day01.txt")).run(&day1::Day1),
+        2 => Runner::new(include_str!("../inputs/day02.txt")).run(&day2::Day2),
+        3 => Runner::new(include_str!("../inputs/day03.txt")).run(&day3::Day3),
+        4 => Runner::new(include_str!("../inputs/day04.txt")).run(&day4::Day4),
+        5 => Runner::new(include_str!("../inputs/day05.txt")).run(&day5::Day5),
+        6 => Runner::new(include_str!("../inputs/day06.txt")).run(&day6::Day6),
+        7 => Runner::new(include_str!("../inputs/day07.txt")).run(&day7::Day7),
+        8 => Runner::new(include_str!("../inputs/day08.txt")).run(&day8::Day8),
+        9 => Runner::new(include_str!("../inputs/day09.txt")).run(&day9::Day9),
         _ => panic!("Could not find day {}", day),
     }
 }

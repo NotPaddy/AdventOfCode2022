@@ -1,5 +1,4 @@
-#![feature(iter_array_chunks)]
-#![feature(array_windows)]
+#![feature(iter_array_chunks, array_windows)]
 
 use std::fmt::Display;
 
@@ -49,3 +48,4 @@ pub mod day5;
 pub mod day6;
 pub mod day7;
 pub mod day8;
+pub mod day9;
