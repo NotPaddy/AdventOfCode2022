@@ -22,4 +22,7 @@ path = "src/main.rs"
 name = "aoc_bench"
 harness = false
 
+[profile.release]
+lto = true
+codegen-units = 1
 

@@ -3,12 +3,14 @@ use criterion::{black_box, criterion_group, criterion_main, Criterion};
 
 fn bench_day<const DAY: u8, S: Solution<DAY>>(solution: &S, input: &str, c: &mut Criterion) {
     let mut group = c.benchmark_group(format!("Day {:02}", DAY));
+    group.noise_threshold(0.05);
     group.bench_function("Part 1", |b| {
         b.iter(|| solution.part1(black_box(&input.replace("\r\n", "\n"))))
     });
     group.bench_function("Part 2", |b| {
         b.iter(|| solution.part2(black_box(&input.replace("\r\n", "\n"))))
     });
+    group.finish()
 }
 
 fn bench_day01(c: &mut Criterion) {
@@ -61,4 +63,9 @@ fn bench_day10(c: &mut Criterion) {
 }
 criterion_group!(day10, bench_day10);
 
-criterion_main!(day01, day02, day03, day04, day05, day06, day07, day08, day09, day10);
+fn bench_day11(c: &mut Criterion) {
+    bench_day(&day11::Day11, include_str!("../inputs/day11.txt"), c)
+}
+criterion_group!(day11, bench_day11);
+
+criterion_main!(day01, day02, day03, day04, day05, day06, day07, day08, day09, day10, day11);

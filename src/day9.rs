@@ -91,7 +91,7 @@ mod test {
     }
 
     #[test]
-    fn test_part9() {
+    fn test_part2() {
         assert_eq!(
             Day9.part2(indoc! {"
             R 5
