@@ -129,6 +129,6 @@ mod test {
 
     #[test]
     fn test_part2() {
-        assert_eq!(Day12.part2(TEST_INPUT), None)
+        assert_eq!(Day12.part2(TEST_INPUT), Some(29))
     }
 }

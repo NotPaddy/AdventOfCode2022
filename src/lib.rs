@@ -1,5 +1,7 @@
 #![feature(iter_array_chunks, array_windows)]
 
+extern crate core;
+
 use std::fmt::Display;
 
 pub trait Solution<const DAY: u8> {
@@ -43,6 +45,7 @@ pub mod day1;
 pub mod day10;
 pub mod day11;
 pub mod day12;
+pub mod day13;
 pub mod day2;
 pub mod day3;
 pub mod day4;
