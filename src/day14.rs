@@ -1,8 +1,10 @@
 use crate::Solution;
+use fxhash::FxBuildHasher;
 use nom::combinator::iterator;
 use nom::IResult;
 use std::cmp::{max, min};
 use std::collections::HashSet;
+use std::hash::BuildHasher;
 
 pub struct Day14;
 
@@ -11,13 +13,13 @@ impl Solution<14> for Day14 {
 
     fn part1(&self, input: &str) -> Self::Output {
         let mut input_parser = iterator(input, coordinate_line);
-        let world = &mut HashSet::<Point>::new();
-        input_parser.for_each(|l| draw_line(world, l));
+        let mut world: HashSet<Point, _> = HashSet::with_hasher(FxBuildHasher::default());
+        input_parser.for_each(|l| draw_line(&mut world, l));
 
         let mut units = 0;
         let mut path = vec![Point { x: 500, y: 0 }];
         let bottom_edge = world.iter().map(|p| p.y).max().unwrap();
-        while simulate_sand(world, &mut path, bottom_edge, false) {
+        while simulate_sand(&mut world, &mut path, bottom_edge, false) {
             units += 1;
         }
         units
@@ -25,20 +27,23 @@ impl Solution<14> for Day14 {
 
     fn part2(&self, input: &str) -> Option<Self::Output> {
         let mut input_parser = iterator(input, coordinate_line);
-        let world = &mut HashSet::<Point>::new();
-        input_parser.for_each(|l| draw_line(world, l));
+        let mut world: HashSet<Point, _> = HashSet::with_hasher(FxBuildHasher::default());
+        input_parser.for_each(|l| draw_line(&mut world, l));
 
         let mut units = 0;
         let mut path = vec![Point { x: 500, y: 0 }];
         let bottom_edge = world.iter().map(|p| p.y).max().unwrap();
-        while simulate_sand(world, &mut path, bottom_edge, true) {
+        while simulate_sand(&mut world, &mut path, bottom_edge, true) {
             units += 1;
         }
         Some(units)
     }
 }
 
-fn draw_line(world: &mut HashSet<Point>, line: Vec<Point>) {
+fn draw_line<S>(world: &mut HashSet<Point, S>, line: Vec<Point>)
+where
+    S: BuildHasher,
+{
     for [from, to] in line.array_windows::<2>() {
         world.insert(*from);
         if from.x == to.x {
@@ -59,12 +64,15 @@ fn draw_line(world: &mut HashSet<Point>, line: Vec<Point>) {
     }
 }
 
-fn simulate_sand(
-    world: &mut HashSet<Point>,
+fn simulate_sand<S>(
+    world: &mut HashSet<Point, S>,
     path: &mut Vec<Point>,
     lowest_y: u32,
     floor: bool,
-) -> bool {
+) -> bool
+where
+    S: BuildHasher,
+{
     if path.is_empty() {
         return false;
     }
