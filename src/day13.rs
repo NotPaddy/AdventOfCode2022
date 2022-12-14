@@ -52,32 +52,30 @@ pub enum Packet {
     List(Vec<Self>),
 }
 
-impl Packet {
-    fn from_tokens(tokens: &mut Vec<&str>) -> Result<Self, ()> {
-        let mut list = Vec::new();
-        while let Some(token) = tokens.pop() {
-            match token {
-                "," => (),
-                "[" => list.push(Self::from_tokens(tokens)?),
-                "]" => break,
-                x => list.push(Self::Integer(x.parse().map_err(|_| ())?)),
-            }
-        }
-        Ok(Self::List(list))
-    }
-}
-
 impl FromStr for Packet {
     type Err = ();
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let s = s
-            .replace(',', " , ")
-            .replace('[', " [ ")
-            .replace(']', " ] ");
-        let tokens = &mut s.split_whitespace().rev().collect::<Vec<_>>();
-        tokens.pop();
-        Packet::from_tokens(tokens)
+        use nom::branch::alt;
+        use nom::character::complete::{char, u8};
+        use nom::combinator::map;
+        use nom::multi::separated_list0;
+        use nom::sequence::delimited;
+        use nom::{Finish, IResult};
+
+        fn parse_packet(input: &str) -> IResult<&str, Packet> {
+            alt((map(u8, Packet::Integer), parse_enclosed_list))(input)
+        }
+
+        fn parse_list(input: &str) -> IResult<&str, Packet> {
+            map(separated_list0(char(','), parse_packet), Packet::List)(input)
+        }
+
+        fn parse_enclosed_list(input: &str) -> IResult<&str, Packet> {
+            delimited(char('['), parse_list, char(']'))(input)
+        }
+
+        parse_enclosed_list(s).finish().map_err(|_| ()).map(|r| r.1)
     }
 }
 

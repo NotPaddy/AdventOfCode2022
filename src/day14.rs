@@ -140,11 +140,12 @@ fn coordinate_line(input: &str) -> IResult<&str, Vec<Point>> {
 
 fn coordinate_pair(input: &str) -> IResult<&str, Point> {
     use nom::character::complete::{char, u32};
-    use nom::combinator::map_res;
+    use nom::combinator::map;
     use nom::sequence::{preceded, tuple};
 
-    map_res(tuple((u32, preceded(char(','), u32))), |(x, y)| {
-        Ok::<Point, &str>(Point { x, y })
+    map(tuple((u32, preceded(char(','), u32))), |(x, y)| Point {
+        x,
+        y,
     })(input)
 }
 
