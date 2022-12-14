@@ -1,6 +1,5 @@
 #![feature(iter_array_chunks, array_windows)]
-
-extern crate core;
+#![feature(assert_matches)]
 
 use std::fmt::Display;
 
@@ -46,6 +45,7 @@ pub mod day10;
 pub mod day11;
 pub mod day12;
 pub mod day13;
+pub mod day14;
 pub mod day2;
 pub mod day3;
 pub mod day4;
