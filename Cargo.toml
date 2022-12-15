@@ -8,10 +8,11 @@ path = "src/lib.rs"
 
 [dependencies]
 clap = { version = "4.0.22", features = ["derive"] }
+fxhash = "0.2.1"
 indextree = "4.5.0"
 indoc = "1.0.7"
+itertools = "0.10.5"
 nom = "7"
-fxhash = "0.2.1"
 
 [dev-dependencies]
 criterion = { version = "0.4.0", features = ["default", "html_reports"] }

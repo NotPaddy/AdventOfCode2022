@@ -1,4 +1,5 @@
 use crate::Solution;
+use itertools::Itertools;
 use std::cmp::max;
 use std::str::FromStr;
 
@@ -36,22 +37,51 @@ impl Solution<15> for Day15 {
     fn part2(&self, input: &str) -> Option<Self::Output> {
         let sensors = get_sensors_with_distance(input);
 
-        let mut spans: Vec<(i32, i32)> = vec![(i32::MIN, i32::MAX); sensors.len()];
-        // Brute force go brrr
-        for y in 0..=self.max_coordinate {
-            let mut x = 0;
-            for &(start, end) in process_span_gaps(y, &mut spans, &sensors) {
-                if (start..=end).contains(&x) {
-                    x = end + 1;
-                }
-            }
+        let corners = sensors
+            .iter()
+            .map(|(sensor, distance)| (sensor.position.rotate(), distance))
+            .flat_map(|(rotated, distance)| {
+                vec![
+                    Coordinate {
+                        x: rotated.x + distance,
+                        y: rotated.y + distance,
+                    },
+                    Coordinate {
+                        x: rotated.x - distance,
+                        y: rotated.y - distance,
+                    },
+                ]
+            })
+            .collect::<Vec<_>>();
 
-            if x <= self.max_coordinate {
-                return Some(x as u64 * 4_000_000 + y as u64);
-            }
-        }
+        let x_candidates = corners
+            .iter()
+            .tuple_combinations()
+            .filter(|(c1, c2)| c1.x.abs_diff(c2.x) == 2)
+            .map(|(c1, c2)| max(c1.x, c2.x) - 1)
+            .unique();
 
-        None
+        let y_candidates = corners
+            .iter()
+            .tuple_combinations()
+            .filter(|(c1, c2)| c1.y.abs_diff(c2.y) == 2)
+            .map(|(c1, c2)| max(c1.y, c2.y) - 1)
+            .unique();
+
+        x_candidates
+            .cartesian_product(y_candidates)
+            .map(|(x, y)| Coordinate { x, y }.rotate_back())
+            .filter(|coordinate| {
+                let range = 0..=self.max_coordinate;
+                range.contains(&coordinate.x) && range.contains(&coordinate.y)
+            })
+            .filter(|coordinate| {
+                sensors
+                    .iter()
+                    .all(|(sensor, _)| !sensor.is_in_range(coordinate))
+            })
+            .map(|coordinate| coordinate.x as u64 * 4_000_000 + coordinate.y as u64)
+            .next()
     }
 }
 
@@ -65,8 +95,8 @@ fn get_sensors_with_distance(input: &str) -> Vec<(Sensor, i32)> {
         })
         .collect::<Vec<_>>();
     sensors.sort_by(|(a, dist_a), (b, dist_b)| {
-        let a = (a.x - dist_a, a.y - dist_a);
-        let b = (b.x - dist_b, b.y - dist_b);
+        let a = (a.position.x - dist_a, a.position.y - dist_a);
+        let b = (b.position.x - dist_b, b.position.y - dist_b);
         a.cmp(&b)
     });
     sensors
@@ -79,11 +109,11 @@ fn process_span_gaps<'a>(
 ) -> &'a [(i32, i32)] {
     let mut length = 0;
     for (sensor, distance) in sensors {
-        let range = distance - sensor.y.abs_diff(y) as i32;
+        let range = distance - sensor.position.y.abs_diff(y) as i32;
 
         if range >= 0 {
             let span = spans.get_mut(length).unwrap();
-            *span = (sensor.x - range, sensor.x + range);
+            *span = (sensor.position.x - range, sensor.position.x + range);
             length += 1;
         }
     }
@@ -93,16 +123,42 @@ fn process_span_gaps<'a>(
 }
 
 #[derive(Debug, Eq, PartialEq)]
-struct Sensor {
+struct Coordinate {
     x: i32,
     y: i32,
-    beacon_x: i32,
-    beacon_y: i32,
+}
+
+impl Coordinate {
+    fn rotate(&self) -> Self {
+        Self {
+            x: self.y - self.x,
+            y: self.y + self.x,
+        }
+    }
+
+    fn rotate_back(&self) -> Self {
+        let y = (self.x + self.y) / 2;
+        Self { x: self.y - y, y }
+    }
+
+    fn distance(&self, other: &Coordinate) -> u32 {
+        self.x.abs_diff(other.x) + self.y.abs_diff(other.y)
+    }
+}
+
+#[derive(Debug, Eq, PartialEq)]
+struct Sensor {
+    position: Coordinate,
+    beacon: Coordinate,
 }
 
 impl Sensor {
     fn beacon_distance(&self) -> u32 {
-        self.x.abs_diff(self.beacon_x) + self.y.abs_diff(self.beacon_y)
+        self.position.distance(&self.beacon)
+    }
+
+    fn is_in_range(&self, coordinate: &Coordinate) -> bool {
+        coordinate.distance(&self.position) <= self.beacon_distance()
     }
 }
 
@@ -116,15 +172,16 @@ impl FromStr for Sensor {
         use nom::sequence::{pair, preceded, separated_pair, terminated};
         use nom::IResult;
 
-        fn named_coordinate_pair(input: &str) -> IResult<&str, (i32, i32)> {
-            separated_pair(
-                preceded(tag("x="), i32),
-                terminated(char(','), space0),
-                preceded(tag("y="), i32),
+        fn named_coordinate_pair(input: &str) -> IResult<&str, Coordinate> {
+            map(
+                separated_pair(
+                    preceded(tag("x="), i32),
+                    terminated(char(','), space0),
+                    preceded(tag("y="), i32),
+                ),
+                |(x, y)| Coordinate { x, y },
             )(input)
         }
-
-        type Coordinate = (i32, i32);
 
         fn sensor_line_tuples(input: &str) -> IResult<&str, (Coordinate, Coordinate)> {
             pair(
@@ -134,11 +191,9 @@ impl FromStr for Sensor {
         }
 
         fn sensor_line(input: &str) -> IResult<&str, Sensor> {
-            map(sensor_line_tuples, |(sensor, beacon)| Sensor {
-                x: sensor.0,
-                y: sensor.1,
-                beacon_x: beacon.0,
-                beacon_y: beacon.1,
+            map(sensor_line_tuples, |(position, beacon)| Sensor {
+                position,
+                beacon,
             })(input)
         }
 

@@ -17,6 +17,7 @@ dependencies = [
  "fxhash",
  "indextree",
  "indoc",
+ "itertools",
  "nom",
 ]
 
