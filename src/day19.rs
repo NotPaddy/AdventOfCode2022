@@ -10,6 +10,7 @@ use nom::sequence::{delimited, terminated, tuple};
 use nom::sequence::{preceded, separated_pair};
 use nom::IResult;
 use nom::{AsChar, InputTakeAtPosition, Parser};
+use rayon::prelude::*;
 use std::array;
 use std::cmp::max;
 
@@ -20,6 +21,8 @@ impl Solution<19> for Day19 {
 
     fn part1(&self, input: &str) -> Self::Output {
         iterator(input, terminated(parse_blueprint, multispace0))
+            .collect::<Vec<_>>()
+            .par_iter()
             .map(|bp| bp.quality_level(24))
             .sum()
     }
@@ -28,6 +31,8 @@ impl Solution<19> for Day19 {
         Some(
             iterator(input, terminated(parse_blueprint, multispace0))
                 .take(3)
+                .collect::<Vec<_>>()
+                .par_iter()
                 .map(|bp| bp.maximum_geode_count(32))
                 .product(),
         )

@@ -14,6 +14,7 @@ indoc = "1"
 itertools = "0.10"
 ndarray = "0.15"
 nom = "7"
+rayon = "1.6"
 
 [dev-dependencies]
 criterion = { version = "0.4.0", features = ["default", "html_reports"] }
