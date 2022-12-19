@@ -183,6 +183,6 @@ mod test {
 
     #[test]
     fn test_part2() {
-        assert_eq!(Day11.part2(TEST_INPUT), Some(271331015820))
+        assert_eq!(Day11.part2(TEST_INPUT), Some(2713310158))
     }
 }
