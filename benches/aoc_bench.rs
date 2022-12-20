@@ -112,7 +112,12 @@ fn bench_day19(c: &mut Criterion) {
 }
 criterion_group!(day19, bench_day19);
 
+fn bench_day20(c: &mut Criterion) {
+    bench_day(&day20::Day20, include_str!("../inputs/day20.txt"), c)
+}
+criterion_group!(day20, bench_day20);
+
 criterion_main!(
     day01, day02, day03, day04, day05, day06, day07, day08, day09, day10, day11, day12, day13,
-    day14, day15, day16, day17, day18, day19
+    day14, day15, day16, day17, day18, day19, day20
 );
