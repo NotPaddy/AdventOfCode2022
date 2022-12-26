@@ -3,7 +3,6 @@ use nom::branch::alt;
 use nom::character::complete::{char as n_char, u8 as n_u8};
 use nom::combinator::{iterator, map, map_opt};
 use nom::IResult;
-use std::array;
 use std::collections::HashMap;
 
 pub struct Day22;
