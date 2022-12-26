@@ -36,6 +36,7 @@ fn main() {
         22 => Runner::new(include_str!("../inputs/day22.txt")).run(&day22::Day22),
         23 => Runner::new(include_str!("../inputs/day23.txt")).run(&day23::Day23),
         24 => Runner::new(include_str!("../inputs/day24.txt")).run(&day24::Day24),
+        25 => Runner::new(include_str!("../inputs/day25.txt")).run(&day25::Day25),
         _ => panic!("Could not find day {}", day),
     }
 }
