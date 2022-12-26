@@ -21,7 +21,7 @@ fn decode_snafu(snafu: &str) -> usize {
 fn encode_snafu(num: usize) -> String {
     const SNAFU_SYMBOLS: [&str; 5] = ["0", "1", "2", "=", "-"];
     if num == 0 {
-        "".to_string()
+        String::new()
     } else {
         encode_snafu((num + 2) / 5) + SNAFU_SYMBOLS[num % 5]
     }
@@ -50,11 +50,11 @@ mod test {
 
     #[test]
     fn test_part1() {
-        assert_eq!(Day25.part1(TEST_INPUT), "2=-1=0")
+        assert_eq!(Day25.part1(TEST_INPUT), "2=-1=0");
     }
 
     #[test]
     fn test_part2() {
-        assert_eq!(Day25.part2(TEST_INPUT), None)
+        assert_eq!(Day25.part2(TEST_INPUT), None);
     }
 }

@@ -111,11 +111,11 @@ mod test {
 
     #[test]
     fn test_part1() {
-        assert_eq!(Day8.part1(TEST_INPUT), 21)
+        assert_eq!(Day8.part1(TEST_INPUT), 21);
     }
 
     #[test]
     fn test_part2() {
-        assert_eq!(Day8.part2(TEST_INPUT), Some(8))
+        assert_eq!(Day8.part2(TEST_INPUT), Some(8));
     }
 }

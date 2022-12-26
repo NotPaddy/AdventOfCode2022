@@ -10,6 +10,7 @@ pub struct Day22;
 impl Solution<22> for Day22 {
     type Output = usize;
 
+    #[allow(clippy::cast_sign_loss, clippy::cast_possible_wrap)]
     fn part1(&self, input: &str) -> Self::Output {
         let (grid, instructions) = input.split_once("\n\n").unwrap();
         let (grid, length, width) = parse_grid(grid);
@@ -35,10 +36,9 @@ impl Solution<22> for Day22 {
 
                     if grid[next_row as usize][next_col as usize] == Tile::Wall {
                         break;
-                    } else {
-                        row = next_row as usize;
-                        col = next_col as usize;
                     }
+                    row = next_row as usize;
+                    col = next_col as usize;
                 }
                 State {
                     row,
@@ -51,6 +51,7 @@ impl Solution<22> for Day22 {
         state.password()
     }
 
+    #[allow(clippy::match_on_vec_items)]
     fn part2(&self, input: &str) -> Option<Self::Output> {
         let (grid, instructions) = input.split_once("\n\n").unwrap();
         let (grid, _, _) = parse_grid(grid);
@@ -90,7 +91,7 @@ const LEFT: usize = 3;
 const RIGHT: usize = 1;
 
 impl State {
-    fn get_starting_state(grid: &Vec<Vec<Tile>>) -> State {
+    fn get_starting_state(grid: &[Vec<Tile>]) -> State {
         State {
             row: 0,
             col: grid[0].iter().position(|p| *p == Tile::Empty).unwrap(),
@@ -119,6 +120,12 @@ struct Cube {
 }
 
 impl Cube {
+    #[allow(
+        clippy::cast_sign_loss,
+        clippy::cast_possible_wrap,
+        clippy::cast_possible_truncation,
+        clippy::cast_precision_loss
+    )]
     fn from_grid(grid: Vec<Vec<Tile>>) -> Self {
         let tiles = grid
             .iter()
@@ -132,7 +139,7 @@ impl Cube {
 
         let mut outstanding_transitions = 6 * 4;
 
-        for (&(row, col), id) in face_ids.iter() {
+        for (&(row, col), id) in &face_ids {
             for direction in 0..4 {
                 let next_row = (row as isize + ROW_OFFSETS[direction]) as usize;
                 let next_col = (col as isize + COL_OFFSETS[direction]) as usize;
@@ -177,14 +184,14 @@ impl Cube {
         };
 
         Self {
-            side_length,
             grid,
+            side_length,
             face_transitions,
             face_ids,
         }
     }
 
-    fn grid_faces(grid: &Vec<Vec<Tile>>, side_length: usize) -> HashMap<(usize, usize), usize> {
+    fn grid_faces(grid: &[Vec<Tile>], side_length: usize) -> HashMap<(usize, usize), usize> {
         let mut face_ids = HashMap::new();
 
         for (row_id, row) in grid.iter().enumerate() {
@@ -211,6 +218,7 @@ impl Cube {
         )
     }
 
+    #[allow(clippy::cast_sign_loss, clippy::cast_possible_wrap)]
     fn step_state(&self, state: &State) -> State {
         let &State {
             row,
@@ -269,6 +277,7 @@ impl Cube {
     }
 }
 
+#[allow(clippy::cast_sign_loss, clippy::cast_possible_wrap)]
 fn parse_grid(input: &str) -> (Vec<Vec<Tile>>, isize, isize) {
     let mut grid = input
         .lines()
@@ -346,11 +355,11 @@ mod test {
 
     #[test]
     fn test_part1() {
-        assert_eq!(Day22.part1(TEST_INPUT), 6032)
+        assert_eq!(Day22.part1(TEST_INPUT), 6032);
     }
 
     #[test]
     fn test_part2() {
-        assert_eq!(Day22.part2(TEST_INPUT), Some(5031))
+        assert_eq!(Day22.part2(TEST_INPUT), Some(5031));
     }
 }

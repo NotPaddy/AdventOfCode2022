@@ -43,6 +43,7 @@ struct Heightmap {
     end: (usize, usize),
 }
 
+#[allow(clippy::cast_possible_wrap)]
 impl Heightmap {
     fn bfs(&self, start: (usize, usize), end: (usize, usize)) -> Option<u32> {
         let mut queue = VecDeque::from([(start, 0)]);
@@ -67,9 +68,9 @@ impl Heightmap {
                 .for_each(|(x_n, y_n)| {
                     if !seen[x_n][y_n] {
                         seen[x_n][y_n] = true;
-                        queue.push_back(((x_n, y_n), distance + 1))
+                        queue.push_back(((x_n, y_n), distance + 1));
                     }
-                })
+                });
         }
 
         None
@@ -124,11 +125,11 @@ mod test {
 
     #[test]
     fn test_part1() {
-        assert_eq!(Day12.part1(TEST_INPUT), 31)
+        assert_eq!(Day12.part1(TEST_INPUT), 31);
     }
 
     #[test]
     fn test_part2() {
-        assert_eq!(Day12.part2(TEST_INPUT), Some(29))
+        assert_eq!(Day12.part2(TEST_INPUT), Some(29));
     }
 }

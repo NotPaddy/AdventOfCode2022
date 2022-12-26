@@ -11,7 +11,7 @@ impl Solution<1> for Day1 {
 
     fn part2(&self, input: &str) -> Option<Self::Output> {
         let mut elves: Vec<u32> = Self::get_elf_calories(input).collect();
-        elves.sort();
+        elves.sort_unstable();
 
         let sum = elves.iter().rev().take(3).sum();
         Some(sum)
@@ -50,11 +50,11 @@ mod test {
 
     #[test]
     fn test_part1() {
-        assert_eq!(Day1.part1(TEST_INPUT), 24000)
+        assert_eq!(Day1.part1(TEST_INPUT), 24000);
     }
 
     #[test]
     fn test_part2() {
-        assert_eq!(Day1.part2(TEST_INPUT), Some(45000))
+        assert_eq!(Day1.part2(TEST_INPUT), Some(45000));
     }
 }

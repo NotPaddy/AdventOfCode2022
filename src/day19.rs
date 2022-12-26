@@ -61,7 +61,7 @@ impl State {
                 if material_costs[material] <= self.inventory[material] {
                     0
                 } else if self.robots[material] == 0 {
-                    max_time as u32 + 1
+                    max_time + 1
                 } else {
                     (material_costs[material] - self.inventory[material] + self.robots[material]
                         - 1)
@@ -88,7 +88,7 @@ impl State {
 
 impl Blueprint {
     fn quality_level(&self, minutes: u32) -> u32 {
-        self.maximum_geode_count(minutes) * self.id as u32
+        self.maximum_geode_count(minutes) * u32::from(self.id)
     }
 
     fn maximum_geode_count(&self, minutes: u32) -> u32 {
@@ -103,7 +103,7 @@ impl Blueprint {
 
         let mut max_geodes = 0;
         self.recurse(
-            State {
+            &State {
                 inventory: [0; 4],
                 robots: [1, 0, 0, 0],
                 minute: 0,
@@ -115,7 +115,7 @@ impl Blueprint {
         max_geodes
     }
 
-    fn recurse(&self, state: State, minutes: u32, robot_caps: &[u32; 4], max_geodes: &mut u32) {
+    fn recurse(&self, state: &State, minutes: u32, robot_caps: &[u32; 4], max_geodes: &mut u32) {
         for robot in 0..4 {
             if state.robots[robot] == robot_caps[robot] {
                 continue;
@@ -137,7 +137,7 @@ impl Blueprint {
             }
 
             self.recurse(
-                State {
+                &State {
                     inventory,
                     robots,
                     minute: next_time,
@@ -149,7 +149,7 @@ impl Blueprint {
         }
         *max_geodes = max(
             *max_geodes,
-            state.inventory[3] + state.robots[3] * (minutes - state.minute) as u32,
+            state.inventory[3] + state.robots[3] * (minutes - state.minute),
         );
     }
 }
@@ -252,26 +252,16 @@ mod test {
         assert_matches!(
             parse_blueprint(TEST_INPUT.split_once("\n\n").unwrap().0),
             Ok(_)
-        )
+        );
     }
 
     #[test]
     fn test_part1() {
-        assert_eq!(Day19.part1(TEST_INPUT), 33)
+        assert_eq!(Day19.part1(TEST_INPUT), 33);
     }
 
     #[test]
     fn test_part2() {
-        assert_eq!(Day19.part2(TEST_INPUT), Some(56 * 62))
-    }
-
-    #[test]
-    fn test_part1_actual() {
-        assert_eq!(Day19.part1(include_str!("../inputs/day19.txt")), 1958)
-    }
-
-    #[test]
-    fn test_part2_actual() {
-        assert_eq!(Day19.part2(include_str!("../inputs/day19.txt")), Some(4257))
+        assert_eq!(Day19.part2(TEST_INPUT), Some(56 * 62));
     }
 }

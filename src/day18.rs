@@ -14,7 +14,7 @@ impl Solution<18> for Day18 {
 
         cubes
             .iter()
-            .flat_map(|p| neighbors(p))
+            .flat_map(|p| neighbors(*p))
             .filter(|n| !cubes.contains(n))
             .count()
     }
@@ -29,7 +29,7 @@ impl Solution<18> for Day18 {
         let range = -1..=max_bounds + 1;
 
         while let Some(pos) = stack.pop() {
-            for n in neighbors(&pos) {
+            for n in neighbors(pos) {
                 if !cubes.contains(&n)
                     && !seen.contains(&n)
                     && [n.0, n.1, n.2].iter().all(|&i| range.contains(&i))
@@ -42,7 +42,7 @@ impl Solution<18> for Day18 {
 
         let count = cubes
             .iter()
-            .flat_map(|p| neighbors(p))
+            .flat_map(|p| neighbors(*p))
             .filter(|n| seen.contains(n))
             .count();
         Some(count)
@@ -51,7 +51,7 @@ impl Solution<18> for Day18 {
 
 type Position = (i16, i16, i16);
 
-fn neighbors(&(x, y, z): &Position) -> [Position; 6] {
+fn neighbors((x, y, z): Position) -> [Position; 6] {
     [
         (x - 1, y, z),
         (x + 1, y, z),
@@ -91,11 +91,11 @@ mod test {
 
     #[test]
     fn test_part1() {
-        assert_eq!(Day18.part1(TEST_INPUT), 64)
+        assert_eq!(Day18.part1(TEST_INPUT), 64);
     }
 
     #[test]
     fn test_part2() {
-        assert_eq!(Day18.part2(TEST_INPUT), Some(58))
+        assert_eq!(Day18.part2(TEST_INPUT), Some(58));
     }
 }

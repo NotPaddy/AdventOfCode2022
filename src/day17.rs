@@ -74,11 +74,21 @@ impl Solution<17> for Day17 {
 struct Rock(u32);
 
 const ROCKS: &[Rock; 5] = &[
-    Rock(u32::from_le_bytes([0b011110, 0b000000, 0b000000, 0b000000])),
-    Rock(u32::from_le_bytes([0b001000, 0b011100, 0b001000, 0b000000])),
-    Rock(u32::from_le_bytes([0b011100, 0b000100, 0b000100, 0b000000])),
-    Rock(u32::from_le_bytes([0b010000, 0b010000, 0b010000, 0b010000])),
-    Rock(u32::from_le_bytes([0b011000, 0b011000, 0b000000, 0b000000])),
+    Rock(u32::from_le_bytes([
+        0b01_1110, 0b00_0000, 0b00_0000, 0b00_0000,
+    ])),
+    Rock(u32::from_le_bytes([
+        0b00_1000, 0b01_1100, 0b00_1000, 0b00_0000,
+    ])),
+    Rock(u32::from_le_bytes([
+        0b01_1100, 0b00_0100, 0b00_0100, 0b00_0000,
+    ])),
+    Rock(u32::from_le_bytes([
+        0b01_0000, 0b01_0000, 0b01_0000, 0b01_0000,
+    ])),
+    Rock(u32::from_le_bytes([
+        0b01_1000, 0b01_1000, 0b00_0000, 0b00_0000,
+    ])),
 ];
 
 enum Direction {
@@ -100,8 +110,8 @@ impl Direction {
 }
 
 const WALLS: (u32, u32) = (
-    u32::from_le_bytes([0b01000000, 0b01000000, 0b01000000, 0b01000000]),
-    u32::from_le_bytes([0b00000001, 0b00000001, 0b00000001, 0b00000001]),
+    u32::from_le_bytes([0b0100_0000, 0b0100_0000, 0b0100_0000, 0b0100_0000]),
+    u32::from_le_bytes([0b0000_0001, 0b0000_0001, 0b0000_0001, 0b0000_0001]),
 );
 
 impl Rock {
@@ -113,11 +123,11 @@ impl Rock {
         };
 
         if pos & collision_mask == 0 {
-            self.0 = pos
+            self.0 = pos;
         }
     }
 
-    fn byte_rows(&self) -> impl Iterator<Item = u8> {
+    fn byte_rows(self) -> impl Iterator<Item = u8> {
         self.0.to_le_bytes().into_iter().take_while(|&b| b != 0)
     }
 }
@@ -130,7 +140,7 @@ fn get_tower_bytes(tower: &[u8], height: usize) -> u32 {
             .iter()
             .take(4)
             .rev()
-            .fold(0u32, |acc, b| (acc << 8) | *b as u32)
+            .fold(0u32, |acc, b| (acc << 8) | u32::from(*b))
     }
 }
 
@@ -147,7 +157,7 @@ fn drop_rock(tower: &mut Vec<u8>, mut rock: Rock, jets: &[Direction], mut jet_id
         } else if insertion_height == 0
             || rock.0 & get_tower_bytes(tower, insertion_height - 1) != 0
         {
-            insert_rock(tower, &rock, insertion_height);
+            insert_rock(tower, rock, insertion_height);
             return jet_idx;
         } else {
             insertion_height -= 1;
@@ -155,7 +165,7 @@ fn drop_rock(tower: &mut Vec<u8>, mut rock: Rock, jets: &[Direction], mut jet_id
     }
 }
 
-fn insert_rock(tower: &mut Vec<u8>, rock: &Rock, height: usize) {
+fn insert_rock(tower: &mut Vec<u8>, rock: Rock, height: usize) {
     rock.byte_rows().fold(height, |h, rock_byte| {
         if h < tower.len() {
             tower[h] |= rock_byte;
@@ -174,11 +184,11 @@ mod test {
 
     #[test]
     fn test_part1() {
-        assert_eq!(Day17.part1(TEST_INPUT), 3068)
+        assert_eq!(Day17.part1(TEST_INPUT), 3068);
     }
 
     #[test]
     fn test_part2() {
-        assert_eq!(Day17.part2(TEST_INPUT), Some(1_514_285_714_288))
+        assert_eq!(Day17.part2(TEST_INPUT), Some(1_514_285_714_288));
     }
 }

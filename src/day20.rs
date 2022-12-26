@@ -22,6 +22,7 @@ struct Entry {
     index: usize,
 }
 
+#[allow(clippy::cast_possible_truncation)]
 fn decrypt(input: &[i64], key: i64, iterations: usize) -> Option<i64> {
     let mut entries = input
         .iter()
@@ -67,11 +68,11 @@ mod test {
 
     #[test]
     fn test_part1() {
-        assert_eq!(Day20.part1(TEST_INPUT), 3)
+        assert_eq!(Day20.part1(TEST_INPUT), 3);
     }
 
     #[test]
     fn test_part2() {
-        assert_eq!(Day20.part2(TEST_INPUT), Some(1_623_178_306))
+        assert_eq!(Day20.part2(TEST_INPUT), Some(1_623_178_306));
     }
 }

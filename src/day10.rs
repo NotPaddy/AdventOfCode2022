@@ -1,11 +1,11 @@
-use crate::day10::Day10Result::{Part1, Part2};
+use crate::day10::DayResult::{Part1, Part2};
 use crate::Solution;
 use std::fmt::{Display, Formatter};
 
 pub struct Day10;
 
 impl Solution<10> for Day10 {
-    type Output = Day10Result;
+    type Output = DayResult;
 
     fn part1(&self, input: &str) -> Self::Output {
         Part1(
@@ -13,7 +13,7 @@ impl Solution<10> for Day10 {
                 .enumerate()
                 .skip(19)
                 .step_by(40)
-                .map(|(cycle, register)| (cycle + 1) as i32 * register)
+                .map(|(cycle, register)| (cycle + 1) as i64 * register)
                 .sum(),
         )
     }
@@ -22,7 +22,7 @@ impl Solution<10> for Day10 {
         let screen = iterate_state(input)
             .enumerate()
             .fold([false; 240], |mut screen, (cycle, register)| {
-                if register.abs_diff(cycle as i32 % 40) <= 1 {
+                if register.abs_diff(cycle as i64 % 40) <= 1 {
                     screen[cycle] = true;
                 }
                 screen
@@ -36,14 +36,14 @@ impl Solution<10> for Day10 {
     }
 }
 
-fn iterate_state(input: &str) -> impl Iterator<Item = i32> + '_ {
+fn iterate_state(input: &str) -> impl Iterator<Item = i64> + '_ {
     input
         .lines()
         .scan(1, |register, line| {
             let next = match line.split_once(' ') {
                 Some(("addx", arg)) => {
                     let steps = vec![*register, *register];
-                    *register += arg.parse::<i32>().ok()?;
+                    *register += arg.parse::<i64>().ok()?;
                     steps
                 }
                 _ => vec![*register],
@@ -54,16 +54,16 @@ fn iterate_state(input: &str) -> impl Iterator<Item = i32> + '_ {
 }
 
 #[derive(Debug, Eq, PartialEq)]
-pub enum Day10Result {
-    Part1(i32),
+pub enum DayResult {
+    Part1(i64),
     Part2(String),
 }
 
-impl Display for Day10Result {
+impl Display for DayResult {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            Part1(r) => write!(f, "{}", r)?,
-            Part2(r) => write!(f, "{}", r)?,
+            Part1(r) => write!(f, "{r}")?,
+            Part2(r) => write!(f, "{r}")?,
         }
         Ok(())
     }
@@ -72,17 +72,17 @@ impl Display for Day10Result {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::day10::Day10Result::Part2;
+    use crate::day10::DayResult::Part2;
     use indoc::indoc;
 
     #[test]
     fn test_part1() {
-        assert_eq!(Day10.part1(TEST_INPUT), Part1(13140))
+        assert_eq!(Day10.part1(TEST_INPUT), Part1(13140));
     }
 
     #[test]
     fn test_part2() {
-        assert_eq!(Day10.part2(TEST_INPUT), Some(Part2(CRT_OUTPUT.to_owned())))
+        assert_eq!(Day10.part2(TEST_INPUT), Some(Part2(CRT_OUTPUT.to_owned())));
     }
 
     const CRT_OUTPUT: &str = indoc! {"

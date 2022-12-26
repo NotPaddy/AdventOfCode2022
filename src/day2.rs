@@ -9,7 +9,7 @@ impl Solution<2> for Day2 {
         input
             .lines()
             .filter_map(parse_line)
-            .map(|(opp, own)| score(opp, own) as u32)
+            .map(|(opp, own)| u32::from(score(opp, own)))
             .sum()
     }
 
@@ -18,7 +18,7 @@ impl Solution<2> for Day2 {
             .lines()
             .filter_map(parse_line)
             .map(|(opp, outcome)| (opp, get_own(opp, outcome)))
-            .map(|(opp, own)| score(opp, own) as u32)
+            .map(|(opp, own)| u32::from(score(opp, own)))
             .sum();
         Some(score)
     }
@@ -53,11 +53,11 @@ mod test {
 
     #[test]
     fn test_part1() {
-        assert_eq!(Day2.part1(TEST_INPUT), 15)
+        assert_eq!(Day2.part1(TEST_INPUT), 15);
     }
 
     #[test]
     fn test_part2() {
-        assert_eq!(Day2.part2(TEST_INPUT), Some(12))
+        assert_eq!(Day2.part2(TEST_INPUT), Some(12));
     }
 }

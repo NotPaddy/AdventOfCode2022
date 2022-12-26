@@ -9,6 +9,7 @@ pub struct Day15 {
 }
 
 impl Day15 {
+    #[must_use]
     pub fn puzzle() -> Day15 {
         Self {
             target_row: 2_000_000,
@@ -17,6 +18,7 @@ impl Day15 {
     }
 }
 
+#[allow(clippy::cast_sign_loss)]
 impl Solution<15> for Day15 {
     type Output = u64;
 
@@ -31,7 +33,7 @@ impl Solution<15> for Day15 {
             max_end = end.max(max_end);
         }
 
-        positions as u64
+        u64::from(positions)
     }
 
     fn part2(&self, input: &str) -> Option<Self::Output> {
@@ -85,6 +87,7 @@ impl Solution<15> for Day15 {
     }
 }
 
+#[allow(clippy::cast_possible_wrap)]
 fn get_sensors_with_distance(input: &str) -> Vec<(Sensor, i32)> {
     let mut sensors = input
         .lines()
@@ -102,6 +105,7 @@ fn get_sensors_with_distance(input: &str) -> Vec<(Sensor, i32)> {
     sensors
 }
 
+#[allow(clippy::cast_possible_wrap)]
 fn process_span_gaps<'a>(
     y: i32,
     spans: &'a mut [(i32, i32)],
@@ -234,11 +238,11 @@ mod test {
 
     #[test]
     fn test_part1() {
-        assert_eq!(Day15::test().part1(TEST_INPUT), 26)
+        assert_eq!(Day15::test().part1(TEST_INPUT), 26);
     }
 
     #[test]
     fn test_part2() {
-        assert_eq!(Day15::test().part2(TEST_INPUT), Some(56000011))
+        assert_eq!(Day15::test().part2(TEST_INPUT), Some(56_000_011));
     }
 }

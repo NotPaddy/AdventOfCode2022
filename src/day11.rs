@@ -46,7 +46,7 @@ fn get_monkey_business<F: Fn(u64) -> u64>(
                 } else {
                     target_false
                 };
-                monkeys[target].items.push_back(item)
+                monkeys[target].items.push_back(item);
             }
         }
     }
@@ -178,11 +178,11 @@ mod test {
 
     #[test]
     fn test_part1() {
-        assert_eq!(Day11.part1(TEST_INPUT), 10605)
+        assert_eq!(Day11.part1(TEST_INPUT), 10605);
     }
 
     #[test]
     fn test_part2() {
-        assert_eq!(Day11.part2(TEST_INPUT), Some(2713310158))
+        assert_eq!(Day11.part2(TEST_INPUT), Some(2_713_310_158));
     }
 }

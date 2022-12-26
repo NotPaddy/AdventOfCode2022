@@ -65,7 +65,7 @@ fn parse_fs(input: &str) -> FileSystem {
                 cwd = cwd
                     .children(&arena)
                     .find(|&c| matches!(arena[c].get(), FsEntry::Dir { name } if name == dir))
-                    .unwrap()
+                    .unwrap();
             }
             ["dir", name] => {
                 let dir = arena.new_node(FsEntry::Dir {
@@ -74,7 +74,6 @@ fn parse_fs(input: &str) -> FileSystem {
                 cwd.append(dir, &mut arena);
                 directories.push(dir);
             }
-            ["ls"] => (),
             [size, name] => {
                 let size = size.parse::<usize>().unwrap();
                 let file = arena.new_node(FsEntry::File {
@@ -148,11 +147,11 @@ mod test {
 
     #[test]
     fn test_part1() {
-        assert_eq!(Day7.part1(TEST_INPUT), 95437)
+        assert_eq!(Day7.part1(TEST_INPUT), 95437);
     }
 
     #[test]
     fn test_part2() {
-        assert_eq!(Day7.part2(TEST_INPUT), Some(24933642))
+        assert_eq!(Day7.part2(TEST_INPUT), Some(24_933_642));
     }
 }

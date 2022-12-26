@@ -34,11 +34,11 @@ fn priority(item: char) -> Option<u32> {
     if !item.is_ascii_alphabetic() {
         return None;
     }
-    Some(match item {
+    Some(u32::from(match item {
         'a'..='z' => item as u8 - b'a' + 1,
         'A'..='Z' => item as u8 - b'A' + 27,
         _ => unreachable!(),
-    } as u32)
+    }))
 }
 
 #[cfg(test)]
@@ -57,11 +57,11 @@ mod test {
 
     #[test]
     fn test_part1() {
-        assert_eq!(Day3.part1(TEST_INPUT), 157)
+        assert_eq!(Day3.part1(TEST_INPUT), 157);
     }
 
     #[test]
     fn test_part2() {
-        assert_eq!(Day3.part2(TEST_INPUT), Some(70))
+        assert_eq!(Day3.part2(TEST_INPUT), Some(70));
     }
 }

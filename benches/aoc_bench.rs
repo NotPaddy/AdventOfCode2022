@@ -2,7 +2,7 @@ use aoc_2022::*;
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 
 fn bench_day<const DAY: u8, S: Solution<DAY>>(solution: &S, input: &str, c: &mut Criterion) {
-    let mut group = c.benchmark_group(format!("Day {:02}", DAY));
+    let mut group = c.benchmark_group(format!("Day {DAY:02}"));
     group.noise_threshold(0.05);
     group.bench_function("Part 1", |b| {
         b.iter(|| solution.part1(black_box(&input.replace("\r\n", "\n"))))

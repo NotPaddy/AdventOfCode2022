@@ -24,7 +24,7 @@ impl Solution<23> for Day23 {
             if next == elves {
                 return Some(round + 1);
             }
-            elves = next
+            elves = next;
         }
         None
     }
@@ -38,7 +38,7 @@ where
 {
     let mut next_step = HashSet::with_capacity_and_hasher(elves.capacity(), S::default());
     for &elf in elves.iter() {
-        let next_pos = find_destination(&elves, elf, round);
+        let next_pos = find_destination(elves, elf, round);
         if next_pos == elf {
             next_step.insert(elf);
         } else if !next_step.insert(next_pos) {
@@ -65,6 +65,7 @@ where
     elf
 }
 
+#[allow(clippy::cast_sign_loss)]
 fn bounding_box<S>(elves: &HashSet<Position, S>) -> (usize, usize) {
     let (mut min_x, mut max_x, mut min_y, mut max_y) = (i32::MAX, i32::MIN, i32::MAX, i32::MIN);
 
@@ -78,6 +79,7 @@ fn bounding_box<S>(elves: &HashSet<Position, S>) -> (usize, usize) {
     ((max_x - min_x + 1) as usize, (max_y - min_y + 1) as usize)
 }
 
+#[allow(clippy::cast_possible_truncation, clippy::cast_possible_wrap)]
 fn parse_initial_state(input: &str) -> FxHashSet<Position> {
     input
         .lines()
@@ -92,7 +94,7 @@ fn parse_initial_state(input: &str) -> FxHashSet<Position> {
 struct Position(i32, i32);
 
 impl Position {
-    fn neighbors(&self) -> impl Iterator<Item = Position> {
+    fn neighbors(self) -> impl Iterator<Item = Position> {
         NEIGHBOR_OFFSETS
             .map(|o| Position(self.0 + o.0, self.1 + o.1))
             .into_iter()
@@ -147,11 +149,11 @@ mod test {
 
     #[test]
     fn test_part1() {
-        assert_eq!(Day23.part1(TEST_INPUT), 110)
+        assert_eq!(Day23.part1(TEST_INPUT), 110);
     }
 
     #[test]
     fn test_part2() {
-        assert_eq!(Day23.part2(TEST_INPUT), Some(20))
+        assert_eq!(Day23.part2(TEST_INPUT), Some(20));
     }
 }

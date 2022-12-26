@@ -140,8 +140,8 @@ where
         match self {
             MonkeyExpression::Constant(c) => Some(*c),
             MonkeyExpression::Expression(expression) => {
-                let left = monkeys.get(&expression.left)?.calculate(&monkeys)?;
-                let right = monkeys.get(&expression.right)?.calculate(&monkeys)?;
+                let left = monkeys.get(&expression.left)?.calculate(monkeys)?;
+                let right = monkeys.get(&expression.right)?.calculate(monkeys)?;
                 let res = expression.operator.eval(left, right);
                 Some(res)
             }
@@ -161,10 +161,10 @@ where
             MonkeyExpression::Expression(calculation) => {
                 let left = monkeys
                     .get(&calculation.left)?
-                    .calculate_equation_tree(&monkeys, values)?;
+                    .calculate_equation_tree(monkeys, values)?;
                 let right = monkeys
                     .get(&calculation.right)?
-                    .calculate_equation_tree(&monkeys, values)?;
+                    .calculate_equation_tree(monkeys, values)?;
                 let res = calculation.operator.eval(left, right);
                 Some(res)
             }
@@ -304,11 +304,11 @@ mod test {
 
     #[test]
     fn test_part1() {
-        assert_eq!(Day21.part1(TEST_INPUT), 152)
+        assert_eq!(Day21.part1(TEST_INPUT), 152);
     }
 
     #[test]
     fn test_part2() {
-        assert_eq!(Day21.part2(TEST_INPUT), Some(301))
+        assert_eq!(Day21.part2(TEST_INPUT), Some(301));
     }
 }

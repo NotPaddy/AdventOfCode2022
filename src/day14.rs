@@ -14,7 +14,7 @@ impl Solution<14> for Day14 {
     fn part1(&self, input: &str) -> Self::Output {
         let mut input_parser = iterator(input, coordinate_line);
         let mut world: HashSet<Point, _> = HashSet::with_hasher(FxBuildHasher::default());
-        input_parser.for_each(|l| draw_line(&mut world, l));
+        input_parser.for_each(|l| draw_line(&mut world, &l));
 
         let mut units = 0;
         let mut path = vec![Point { x: 500, y: 0 }];
@@ -28,7 +28,7 @@ impl Solution<14> for Day14 {
     fn part2(&self, input: &str) -> Option<Self::Output> {
         let mut input_parser = iterator(input, coordinate_line);
         let mut world: HashSet<Point, _> = HashSet::with_hasher(FxBuildHasher::default());
-        input_parser.for_each(|l| draw_line(&mut world, l));
+        input_parser.for_each(|l| draw_line(&mut world, &l));
 
         let mut units = 0;
         let mut path = vec![Point { x: 500, y: 0 }];
@@ -40,7 +40,7 @@ impl Solution<14> for Day14 {
     }
 }
 
-fn draw_line<S>(world: &mut HashSet<Point, S>, line: Vec<Point>)
+fn draw_line<S>(world: &mut HashSet<Point, S>, line: &[Point])
 where
     S: BuildHasher,
 {
@@ -167,16 +167,16 @@ mod test {
             Ok(("", vec![Point { x: 498, y: 4 }, Point { x: 498, y: 6 }]))
         );
 
-        assert_matches!(coordinate_line(""), Err(_))
+        assert_matches!(coordinate_line(""), Err(_));
     }
 
     #[test]
     fn test_part1() {
-        assert_eq!(Day14.part1(TEST_INPUT), 24)
+        assert_eq!(Day14.part1(TEST_INPUT), 24);
     }
 
     #[test]
     fn test_part2() {
-        assert_eq!(Day14.part2(TEST_INPUT), Some(93))
+        assert_eq!(Day14.part2(TEST_INPUT), Some(93));
     }
 }

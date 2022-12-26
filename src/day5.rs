@@ -17,7 +17,7 @@ impl Solution<5> for Day5 {
         let moves = Move::parse_moves(moves);
 
         for m in moves {
-            m.apply_to(&mut stacks, Crane::CrateMover9000)
+            m.apply_to(&mut stacks, &Crane::CrateMover9000);
         }
 
         stacks.iter().filter_map(|s| s.last()).collect()
@@ -29,7 +29,7 @@ impl Solution<5> for Day5 {
         let moves = Move::parse_moves(moves);
 
         for m in moves {
-            m.apply_to(&mut stacks, Crane::CrateMover9001)
+            m.apply_to(&mut stacks, &Crane::CrateMover9001);
         }
 
         Some(stacks.iter().filter_map(|s| s.last()).collect())
@@ -52,7 +52,7 @@ fn parse_stacks(input: &str) -> Vec<Vec<char>> {
             .filter(|(_, c)| !c.is_whitespace());
 
         for (idx, c) in crates {
-            stacks[idx].push(c)
+            stacks[idx].push(c);
         }
     }
 
@@ -78,7 +78,7 @@ impl Move {
         })
     }
 
-    fn apply_to(&self, stacks: &mut [Vec<char>], crane: Crane) {
+    fn apply_to(&self, stacks: &mut [Vec<char>], crane: &Crane) {
         let from = stacks.get_mut(self.from - 1).unwrap();
         let mut crates = from.split_off(from.len() - self.count);
         match crane {
@@ -108,11 +108,11 @@ mod test {
 
     #[test]
     fn test_part1() {
-        assert_eq!(Day5.part1(TEST_INPUT), "CMZ")
+        assert_eq!(Day5.part1(TEST_INPUT), "CMZ");
     }
 
     #[test]
     fn test_part2() {
-        assert_eq!(Day5.part2(TEST_INPUT), Some("MCD".to_string()))
+        assert_eq!(Day5.part2(TEST_INPUT), Some("MCD".to_string()));
     }
 }

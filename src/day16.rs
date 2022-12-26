@@ -42,6 +42,7 @@ impl Solution<16> for Day16 {
     }
 }
 
+#[allow(clippy::cast_possible_truncation)]
 fn optimize_flow(valves: &mut Vec<Valve>, start_name: &str) -> (usize, usize, Array3<u32>) {
     valves.sort_by_key(|v| Reverse(v.flow_rate));
     let valve_indices = valves
@@ -86,10 +87,7 @@ fn optimize_flow(valves: &mut Vec<Valve>, start_name: &str) -> (usize, usize, Ar
                 let mut max_flow = flow_state[(step, valve_idx, m_v)];
                 if valve_bit & m_v != 0 && step >= 1 {
                     let current_flow = flow_state[(step - 1, valve_idx, m_v - valve_bit)];
-                    max_flow = max(
-                        max_flow,
-                        current_flow + flow[valve_idx] as u32 * step as u32,
-                    );
+                    max_flow = max(max_flow, current_flow + flow[valve_idx] * step as u32);
                 }
                 for &tunnel_idx in &tunnel_adjacency[valve_idx] {
                     max_flow = max(max_flow, flow_state[(step - 1, tunnel_idx, m_v)]);
@@ -122,7 +120,7 @@ impl FromStr for Valve {
         use nom::{Finish, IResult};
 
         fn parse_name(input: &str) -> IResult<&str, String> {
-            map(alpha1, |n: &str| n.to_string())(input)
+            map(alpha1, ToString::to_string)(input)
         }
         fn parse_valve(input: &str) -> IResult<&str, (String, u32)> {
             pair(
@@ -184,11 +182,11 @@ mod test {
 
     #[test]
     fn test_part1() {
-        assert_eq!(Day16.part1(TEST_INPUT), 1651)
+        assert_eq!(Day16.part1(TEST_INPUT), 1651);
     }
 
     #[test]
     fn test_part2() {
-        assert_eq!(Day16.part2(TEST_INPUT), Some(1707))
+        assert_eq!(Day16.part2(TEST_INPUT), Some(1707));
     }
 }

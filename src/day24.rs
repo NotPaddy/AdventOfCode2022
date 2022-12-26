@@ -60,7 +60,7 @@ impl Blizzards {
         for (row, wind) in self.west.iter_mut().enumerate() {
             *wind >>= 1;
             if *wind & walls[row] != 0 {
-                *wind |= walls[row] >> 1
+                *wind |= walls[row] >> 1;
             }
         }
     }
@@ -69,7 +69,7 @@ impl Blizzards {
         for (row, wind) in self.east.iter_mut().enumerate() {
             *wind <<= 1;
             if *wind & walls[row] != 0 {
-                *wind |= 1 << 1
+                *wind |= 1 << 1;
             }
         }
     }
@@ -143,7 +143,7 @@ impl FromStr for Map {
         let mut blizzards = Blizzards::default();
         let lines = s.lines().collect::<Vec<_>>();
 
-        for line in lines.iter() {
+        for line in &lines {
             assert!(line.len() <= 128, "input shouldn't be wider than 128");
 
             let [wall, north, south, west, east] =
@@ -197,11 +197,11 @@ mod test {
 
     #[test]
     fn test_part1() {
-        assert_eq!(Day24.part1(TEST_INPUT), 18)
+        assert_eq!(Day24.part1(TEST_INPUT), 18);
     }
 
     #[test]
     fn test_part2() {
-        assert_eq!(Day24.part2(TEST_INPUT), Some(54))
+        assert_eq!(Day24.part2(TEST_INPUT), Some(54));
     }
 }

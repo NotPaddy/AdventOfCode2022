@@ -129,11 +129,11 @@ mod test {
 
     #[test]
     fn test_part1() {
-        assert_eq!(Day13.part1(TEST_INPUT), 13)
+        assert_eq!(Day13.part1(TEST_INPUT), 13);
     }
 
     #[test]
     fn test_part2() {
-        assert_eq!(Day13.part2(TEST_INPUT), Some(140))
+        assert_eq!(Day13.part2(TEST_INPUT), Some(140));
     }
 }

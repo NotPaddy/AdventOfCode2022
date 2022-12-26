@@ -11,7 +11,7 @@ impl Solution<4> for Day4 {
     }
 
     fn part2(&self, input: &str) -> Option<Self::Output> {
-        Some(filter_count_ranges(input, |l, r| l.overlaps(r)))
+        Some(filter_count_ranges(input, RangeCheck::overlaps))
     }
 }
 
@@ -65,11 +65,11 @@ mod test {
 
     #[test]
     fn test_part1() {
-        assert_eq!(Day4.part1(TEST_INPUT), 2)
+        assert_eq!(Day4.part1(TEST_INPUT), 2);
     }
 
     #[test]
     fn test_part2() {
-        assert_eq!(Day4.part2(TEST_INPUT), Some(4))
+        assert_eq!(Day4.part2(TEST_INPUT), Some(4));
     }
 }
